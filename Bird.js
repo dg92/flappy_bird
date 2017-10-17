@@ -18,7 +18,7 @@ Bird.prototype.hop = function (force) {
   this.yV += force;
 };
 
-Bird.prototype.collideWith = function (pipe) {
+Bird.prototype.collideWithPipe = function (pipe) {
   if(pipe.x - this.x  <= this.r && pipe.x - this.x  >= -this.r ) {
     var uH = pipe.hole - pipe.w/2;
     var lH = pipe.hole + pipe.w/2;
@@ -26,6 +26,10 @@ Bird.prototype.collideWith = function (pipe) {
     return this.y -this.r < uH  || this.y+this.r > lH;
   }
   return false;
+};
+
+Bird.prototype.collideWithWall = function () {
+  return this.y > height || this.y  < 0;
 };
 
 Bird.prototype.draw = function () {
