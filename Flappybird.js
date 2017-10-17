@@ -3,9 +3,10 @@ var gravity = 0.3;
 var pipes = [];
 var speed = 1;
 var score;
+
 function setup() {
-  createCanvas(500, 500);
-  bird = new Bird(50, height/2, 10);
+  createCanvas(800, 500);
+  bird = new Bird(400, height/2, 10);
   score = 0;
   textSize(40);
 
