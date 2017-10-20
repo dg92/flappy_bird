@@ -5,8 +5,6 @@ var speed = 1;
 var score;
 var lastScore;
 var highestScore;
-var neuroEvolution;
-var generations = [];
 
 function getHighestScore() {
   let storedScore = localStorage.getItem("score");
@@ -25,11 +23,6 @@ function setup() {
   createCanvas(800, 500);
   this.getHighestScore();
   bird = new Bird(400, height/2, 10);
-  // neuroEvolution = new NeuroEvolution({
-  //   population: 50,
-  //   network: [2, [3], 1]
-  // });
-  // gen = neuroEvolution.nextGeneration();
   score = 0;
   textSize(40);
   pipes.push(new Pipe(width, random(height/2)+height/4, 180, color(score%255, random(255), random(255))));
@@ -41,7 +34,6 @@ function draw() {
   bird.update();
   bird.draw();
   if(bird.collideWithWall()) {
-    // gen = neuroEvolution.nextGeneration();
     endGame();
   }
 
