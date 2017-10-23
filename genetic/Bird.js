@@ -8,7 +8,6 @@ function Bird(x, y, r) {
 
 Bird.prototype.update = function () {
   this.yV += gravity;
-
   this.y  += this.yV;
 };
 
@@ -17,21 +16,16 @@ Bird.prototype.hop = function (force) {
   this.yV += force;
 };
 
-Bird.prototype.dead = function (pipes) {
+Bird.prototype.dead = function (pipe) {
   if(this.y > height || this.y  < 0) {
     return true;
   }
-  for(var i in pipes) {
-    console.log(pipes[i].x - this.x  <= this.r, pipes[i].x - this.x  >= -this.r )
-    if(pipes[i].x - this.x  <= this.r && pipes[i].x - this.x  >= -this.r ) {
-      var uH = pipes[i].hole - pipes[i].w/2;
-      var lH = pipes[i].hole + pipes[i].w/2;
-      console.log({uH, lH})
-      console.log(this.y -this.r < uH, this.y+this.r > lH)
-      return this.y -this.r < uH  || this.y+this.r > lH;
-    }
-    return false;
+  if(pipe.x - this.x  <= this.r && pipe.x - this.x  >= -this.r ) {
+    var uH = pipe.hole - pipe.w/2;
+    var lH = pipe.hole + pipe.w/2;
+    return this.y -this.r < uH  || this.y+this.r > lH;
   }
+  return false;
 };
 
 Bird.prototype.draw = function () {

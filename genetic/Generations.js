@@ -16,16 +16,16 @@ Generations.prototype.firstGeneration = function(input, hiddens, output) {
 Generations.prototype.nextGeneration = function() {
   if(this.generations.length === 0) {
     return false;
-  } 
+  }
   var gen = this.generations[this.generations.length-1].generateNextGeneration(options);
   this.generations.push(new Generation());
   return gen;
 }
 
-  Generations.prototype.addGenome = function(genome){
-        // Can't add to a Generation if there are no Generations.
-    if(this.generations.length == 0) return false;
+Generations.prototype.addGenome = function(genome){
+      // Can't add to a Generation if there are no Generations.
+  if(this.generations.length == 0) return false;
 
-       // FIXME addGenome returns void.
-    return this.generations[this.generations.length - 1].addGenome(genome);
-  }
+     // FIXME addGenome returns void.
+  return this.generations[this.generations.length - 1].addGenome(genome);
+}

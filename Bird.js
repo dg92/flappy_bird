@@ -22,7 +22,6 @@ Bird.prototype.collideWithPipe = function (pipe) {
   if(pipe.x - this.x  <= this.r && pipe.x - this.x  >= -this.r ) {
     var uH = pipe.hole - pipe.w/2;
     var lH = pipe.hole + pipe.w/2;
-
     return this.y -this.r < uH  || this.y+this.r > lH;
   }
   return false;

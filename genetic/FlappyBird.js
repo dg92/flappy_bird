@@ -1,7 +1,7 @@
 var birds= [];
 var pipes = [];
-var gravity = 0.3;
-var speed = 1;
+var gravity = 0.2;
+var speed = 4;
 var score;
 var lastScore;
 var highestScore;
@@ -57,7 +57,7 @@ function start() {
   score = 0;
   neuroEvolution = new NeuroEvolution({
     population: 50,
-    network: [2, [3], 1]
+    network: [2, [2], 1]
   });
   gen = neuroEvolution.nextGeneration();
   for(var i in this.gen) {
@@ -91,27 +91,27 @@ function draw() {
       if(res > 0.6) {
         birds[i].hop(-6);
       }
-      if(birds[i].dead(pipes)) {
-        birds[i].alive = false;
-        alives--;
-        neuroEvolution.networkScore(gen[i], score);
-        if(this.isItEnd()) {
-          this.start();
-        }
-      }
       for(var j = 0; j < pipes.length; j++) {
-      if(!pipes[j].passed) {
+        if(!pipes[j].passed) {
           if(pipes[j].isPassed(birds[i].x)) {
             score++;
           }
         }
-       }
-     }
+        if(birds[i].dead(pipes[j])) {
+          birds[i].alive = false;
+          alives--;
+          neuroEvolution.networkScore(gen[i], score);
+          if(this.isItEnd()) {
+            this.start();
+          }
+        }
+      }
+    }
   }
   for(var i = 0; i < pipes.length; i++) {
     pipes[i].update();
     pipes[i].draw();
- }
+  }
   noStroke();
   textSize(20);
   fill(255, 255, 255);
