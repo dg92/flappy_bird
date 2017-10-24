@@ -2,7 +2,7 @@ var birds= [];
 var pipes = [];
 var gravity = 0.2;
 var speed = 4;
-var score;
+var score=0;
 var lastScore;
 var highestScore;
 var neuroEvolution;
@@ -10,7 +10,7 @@ var gen = [];
 var generation = 0;
 var alives = 0;
 var options = {
-    network:[1, [1], 1],    // Perceptron network structure (1 hidden
+    network:[1, [2], 1],    // Perceptron network structure (1 hidden
           // layer).
     population:50,          // Population by generation.
     elitism:0.2,            // Best networks kepts unchanged for the next
@@ -52,71 +52,68 @@ function setup() {
 }
 
 function start() {
+  this.setHighestScore();
+  this.getHighestScore();
   birds = [];
   pipes = [];
   score = 0;
   neuroEvolution = new NeuroEvolution({
-    population: 50,
-    network: [2, [2], 1]
+    population: options.population,
+    network: options.network
   });
-  gen = neuroEvolution.nextGeneration();
-  for(var i in this.gen) {
-    birds.push(new  Bird(400, height/2, 10))
-  }
   pipes.push(new Pipe(width, random(height/2)+height/4, 180, color(score%255, random(255), random(255))));
+  gen = neuroEvolution.nextGeneration();
+  for(var i in gen) {
+    birds.push(new Bird(400, height/2, 10))
+  }
   generation++;
   alives = this.birds.length;
 }
 
 function draw() {
   background(51);
-  if(frameCount % 120 === 0) {
+  if(frameCount % 90 === 0) {
     pipes.push(new Pipe(width, random(height/2)+height/4, 180, color(score%255, random(255), random(255))));
   }
-  var nextHole = 0;
-  if(birds.length > 0){
-    for(var i = 0; i < pipes.length; i+=2){
-      if(pipes[i].x + pipes[i].w > birds[0].x){
-        nextHole = pipes[i].hole;
-        break;
-      }
-    }
-  }
+  const newPipes = pipes.filter((pipe) => pipe.x > 0);
   for(var i in birds) {
     birds[i].update();
     birds[i].draw();
     if(birds[i].alive) {
-      var inputs = [birds[i].y/height, nextHole];
-      var res = gen[i].compute(inputs);
-      if(res > 0.6) {
-        birds[i].hop(-6);
-      }
-      for(var j = 0; j < pipes.length; j++) {
-        if(!pipes[j].passed) {
-          if(pipes[j].isPassed(birds[i].x)) {
+      for(var j = 0; j < newPipes.length; j++) {
+        var inputs = [birds[i].y/height, newPipes[j].hole/height];
+        var res = gen[i].compute(inputs);
+        if(res > 0.6) {
+          birds[i].hop(-6);
+        }
+        if(!newPipes[j].passed) {
+          if(newPipes[j].isPassed(birds[i].x)) {
             score++;
           }
         }
-        if(birds[i].dead(pipes[j])) {
+        if(birds[i].dead(newPipes[j])) {
           birds[i].alive = false;
-          alives--;
           neuroEvolution.networkScore(gen[i], score);
           if(this.isItEnd()) {
             this.start();
           }
         }
       }
+      if(!birds[i].alive) {
+        alives--;
+      }
     }
   }
-  for(var i = 0; i < pipes.length; i++) {
-    pipes[i].update();
-    pipes[i].draw();
+  for(var i = 0; i < newPipes.length; i++) {
+    newPipes[i].update();
+    newPipes[i].draw();
   }
   noStroke();
   textSize(20);
   fill(255, 255, 255);
   text("High Score : " + highestScore, 80, 25);
   text("Generation : " + generation, 75, 50);
+  text("Alives : " + alives, 60, 75);
   fill(255, 255, 255);
   text("Score : " + score, 50, height - 20);
 }

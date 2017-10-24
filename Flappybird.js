@@ -40,7 +40,7 @@ function draw() {
   if(frameCount % 120 === 0) {
     pipes.push(new Pipe(width, random(height/2)+height/4, 180, color(score%255, random(255), random(255))));
   }
-  
+
   for(var i = 0; i < pipes.length; i++) {
     pipes[i].update();
     pipes[i].draw();
@@ -78,5 +78,5 @@ function endGame() {
   noLoop();
   noStroke();
   text('You lose !', width/2, height/2);
-  text('Press r to restart !', width/2, height/2+30); 
+  text('Press r to restart !', width/2, height/2+30);
 }

@@ -24,7 +24,7 @@ NeuroEvolution.prototype.nextGeneration = function() {
       for(var i in genomes){
         delete genomes[i].network;
       }
-    }    
+    }
   }
   if(options.historic != -1){
     // Remove older generations.
